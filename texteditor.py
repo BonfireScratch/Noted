@@ -9,29 +9,45 @@ class TextEditor:
         root.quit()
 
     def open_file(self, event=None):
-        txt_file = tkinter.filedialog.askopenfilename(parent=root,initialdir='/Users/')
- 
-        if txt_file:
- 
+        data = self.text_area.get('1.0', END + '-1c')
+        
+        if data != None:
+            response = messagebox.askyesnocancel('TextEditor', 'Do you want to save changes to this text file?')
+            if response != None:
+                if response == False:
+                    self.text_area.delete(1.0, END)
+                else:
+                    file = tkinter.filedialog.asksaveasfile(mode='w')
+                    if file != None:
+                        file.write(data)
+                        file.close()
+                    self.text_area.delete(1.0, END)
+        else:
             self.text_area.delete(1.0, END)
- 
+        
+        txt_file = tkinter.filedialog.askopenfilename(parent=root,initialdir='/Desktop/')
+        
+        if txt_file:
             with open(txt_file) as _file:
                 self.text_area.insert(1.0, _file.read())
                 root.update_idletasks()
 
-    def new_file(self, event=None):
-        res = messagebox.askyesnocancel('TextEditor', 'Do you want to save changes to this text file?')
-        if res != None:
-            if res == False:
-                self.text_area.delete(1.0, END)
-            else:
-                file = tkinter.filedialog.asksaveasfile(mode='w')
-                if file != None:
-                    data = self.text_area.get('1.0', END + '-1c')
 
-                    file.write(data)
-                    file.close()
-                self.text_area.delete(1.0, END)
+    def new_file(self, event=None):
+        data = self.text_area.get('1.0', END + '-1c')
+        if data != None:
+            response = messagebox.askyesnocancel('TextEditor', 'Do you want to save changes to this text file?')
+            if response != None:
+                if response == False:
+                    self.text_area.delete(1.0, END)
+                else:
+                    file = tkinter.filedialog.asksaveasfile(mode='w')
+                    if file != None:
+                        file.write(data)
+                        file.close()
+                    self.text_area.delete(1.0, END)
+        else:
+            self.text_area.delete(1.0, END)
  
     def save_file(self, event=None):
         file = tkinter.filedialog.asksaveasfile(mode='w')
@@ -40,8 +56,9 @@ class TextEditor:
 
             file.write(data)
             file.close()
- 
+      
     def __init__(self, root):
+        global pastData
         self.text_to_write = ""
         root.title("Text Editor")
         root.geometry("600x550")
