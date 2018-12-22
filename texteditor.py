@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter.filedialog
+from tkinter import messagebox
  
 class TextEditor:
 
@@ -17,6 +18,20 @@ class TextEditor:
             with open(txt_file) as _file:
                 self.text_area.insert(1.0, _file.read())
                 root.update_idletasks()
+
+    def new_file(self, event=None):
+        res = messagebox.askyesnocancel('TextEditor', 'Do you want to save changes to this text file?')
+        if res != None:
+            if res == False:
+                self.text_area.delete(1.0, END)
+            else:
+                file = tkinter.filedialog.asksaveasfile(mode='w')
+                if file != None:
+                    data = self.text_area.get('1.0', END + '-1c')
+
+                    file.write(data)
+                    file.close()
+                self.text_area.delete(1.0, END)
  
     def save_file(self, event=None):
         file = tkinter.filedialog.asksaveasfile(mode='w')
@@ -41,6 +56,7 @@ class TextEditor:
         frame.pack()
         the_menu = Menu(root)
         file_menu = Menu(the_menu, tearoff=0)
+        file_menu.add_command(label="New", command=self.new_file)
         file_menu.add_command(label="Open", command=self.open_file)
         file_menu.add_command(label="Save", command=self.save_file)
         file_menu.add_separator()
