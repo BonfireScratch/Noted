@@ -9,21 +9,7 @@ class TextEditor:
         root.quit()
 
     def open_file(self, event=None):
-        data = self.text_area.get('1.0', END + '-1c')
-        
-        if data != None:
-            response = messagebox.askyesnocancel('TextEditor', 'Do you want to save changes to this text file?')
-            if response != None:
-                if response == False:
-                    self.text_area.delete(1.0, END)
-                else:
-                    file = tkinter.filedialog.asksaveasfile(mode='w')
-                    if file != None:
-                        file.write(data)
-                        file.close()
-                    self.text_area.delete(1.0, END)
-        else:
-            self.text_area.delete(1.0, END)
+        self.ask_for_save()
         
         txt_file = tkinter.filedialog.askopenfilename(parent=root,initialdir='/Desktop/')
         
@@ -34,20 +20,7 @@ class TextEditor:
 
 
     def new_file(self, event=None):
-        data = self.text_area.get('1.0', END + '-1c')
-        if data != None:
-            response = messagebox.askyesnocancel('TextEditor', 'Do you want to save changes to this text file?')
-            if response != None:
-                if response == False:
-                    self.text_area.delete(1.0, END)
-                else:
-                    file = tkinter.filedialog.asksaveasfile(mode='w')
-                    if file != None:
-                        file.write(data)
-                        file.close()
-                    self.text_area.delete(1.0, END)
-        else:
-            self.text_area.delete(1.0, END)
+        self.ask_for_save()
  
     def save_file(self, event=None):
         file = tkinter.filedialog.asksaveasfile(mode='w')
@@ -56,6 +29,20 @@ class TextEditor:
 
             file.write(data)
             file.close()
+            
+    def ask_for_save(self, event=None):
+        data = self.text_area.get('1.0', END + '-1c')
+        
+        if data != None:
+            response = messagebox.askyesnocancel('TextEditor', 'Do you want to save changes to this text file?')
+            if response != None:
+                if response == False:
+                    self.text_area.delete(1.0, END)
+                else:
+                    self.save_file()
+                    self.text_area.delete(1.0, END)
+        else:
+            self.text_area.delete(1.0, END)
       
     def __init__(self, root):
         global pastData
