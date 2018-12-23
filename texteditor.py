@@ -1,6 +1,8 @@
 from tkinter import *
 import tkinter.filedialog
 from tkinter import messagebox
+from tkinter import ttk
+from tkinter.font import Font
  
 class TextEditor:
 
@@ -34,7 +36,7 @@ class TextEditor:
         data = self.text_area.get('1.0', END + '-1c')
         
         if data != None:
-            response = messagebox.askyesnocancel('TextEditor', 'Do you want to save changes to this text file?')
+            response = messagebox.askyesnocancel('Noted', 'Do you want to save changes to this text file?')
             if response != None:
                 if response == False:
                     self.text_area.delete(1.0, END)
@@ -44,29 +46,58 @@ class TextEditor:
         else:
             self.text_area.delete(1.0, END)
       
+    def change_color(self, event=None):
+        global c
+        colors = ["white", "gray", "black", "green", "SpringGreen2", "light sea green", "blue", "navy", "deep sky blue", "cyan3", "aquamarine", "SteelBlue3", "red", "orange red", "orange", "sienna1", "indian red", "violet red"]
+        c+=1
+        if c == len(colors):
+            c = 0
+        self.set_color(colors[c])
+            
+    def set_color(self, color):
+        self.text_area.configure(background=color)
+        if color == "black":
+            self.text_area.configure(foreground = "white")
+        elif color == "blue" or color == "navy":
+            self.text_area.configure(foreground = "white")
+        else:
+            self.text_area.configure(foreground = "black")
+            
+    def change_font(self, event=None):
+        print("...")
+    
     def __init__(self, root):
         global pastData
+        
         self.text_to_write = ""
-        root.title("Text Editor")
+        root.title("Noted")
         root.geometry("600x550")
         frame = Frame(root, width=600, height=550)
         scrollbar = Scrollbar(frame)
         self.text_area = Text(frame, width=600, height=550,
                         yscrollcommand=scrollbar.set,
-                        padx=10, pady=10)
+                        padx=20, pady=20)
+        self.text_area.configure(background='white')
+        self.text_area.configure(foreground = "black")
         scrollbar.config(command=self.text_area.yview)
         scrollbar.pack(side="right", fill="y")
         self.text_area.pack(side="left", fill="both", expand=True)
         frame.pack()
         the_menu = Menu(root)
         file_menu = Menu(the_menu, tearoff=0)
+        settings_menu = Menu(the_menu, tearoff=0)
+        settings_menu.add_command(label="Color", command=self.change_color)
+        settings_menu.add_command(label="Font", command=self.change_font)
         file_menu.add_command(label="New", command=self.new_file)
         file_menu.add_command(label="Open", command=self.open_file)
         file_menu.add_command(label="Save", command=self.save_file)
         file_menu.add_separator()
         file_menu.add_command(label="Exit", command=self.quit_app)
         the_menu.add_cascade(label="File", menu=file_menu)
+        the_menu.add_cascade(label="Settings", menu=settings_menu)
         root.config(menu=the_menu)
+
+c = 0 
  
 root = Tk()
  
