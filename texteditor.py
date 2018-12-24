@@ -11,6 +11,7 @@ class TextEditor:
         root.quit()
 
     def open_file(self, event=None):
+        global pastData
         self.ask_for_save()
         
         txt_file = tkinter.filedialog.askopenfilename(parent=root,initialdir='/Desktop/')
@@ -18,6 +19,7 @@ class TextEditor:
         if txt_file:
             with open(txt_file) as _file:
                 self.text_area.insert(1.0, _file.read())
+                pastData = _file.read()
                 root.update_idletasks()
 
 
@@ -28,14 +30,15 @@ class TextEditor:
         file = tkinter.filedialog.asksaveasfile(mode='w')
         if file != None:
             data = self.text_area.get('1.0', END + '-1c')
-
             file.write(data)
-            file.close()
+            file.close
+            pastData = data
             
     def ask_for_save(self, event=None):
         data = self.text_area.get('1.0', END + '-1c')
-        
-        if data != None:
+        if pastData == data:
+            self.text_area.delete(1.0, END)
+        elif data != None:
             response = messagebox.askyesnocancel('Noted', 'Do you want to save changes to this text file?')
             if response != None:
                 if response == False:
@@ -43,8 +46,6 @@ class TextEditor:
                 else:
                     self.save_file()
                     self.text_area.delete(1.0, END)
-        else:
-            self.text_area.delete(1.0, END)
       
     def change_color(self, event=None):
         global c
@@ -64,11 +65,19 @@ class TextEditor:
             self.text_area.configure(foreground = "black")
             
     def change_font(self, event=None):
-        print("...")
+        global a
+        fnt = ["Heveltica", "Times", "verdana", "comic sans ms", "courier new", "fixedsys", "ms sans Serif", "ms Serif", "symbol", "times new roman"]
+        siz = ["10", "10", "10", "8", "12", "9", "11", "16", "12", "16"]
+        
+        a+=1
+        if a == len(fnt):
+            a = 0
+        self.set_font(fnt[a], siz[a])
+        
+    def set_font(self, fnt, siz):
+        self.text_area.configure(font=(fnt, int(siz), ""))
     
     def __init__(self, root):
-        global pastData
-        
         self.text_to_write = ""
         root.title("Noted")
         root.geometry("600x550")
@@ -97,7 +106,11 @@ class TextEditor:
         the_menu.add_cascade(label="Settings", menu=settings_menu)
         root.config(menu=the_menu)
 
+pastData = ""
+
 c = 0 
+
+a = 0
  
 root = Tk()
  
