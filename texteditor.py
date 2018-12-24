@@ -1,8 +1,7 @@
 from tkinter import *
 import tkinter.filedialog
 from tkinter import messagebox
-from tkinter import ttk
-from tkinter.font import Font
+import os
  
 class TextEditor:
 
@@ -12,6 +11,7 @@ class TextEditor:
 
     def open_file(self, event=None):
         global pastData
+        global txt_file
         self.ask_for_save()
         
         txt_file = tkinter.filedialog.askopenfilename(parent=root,initialdir='/Desktop/')
@@ -77,6 +77,21 @@ class TextEditor:
     def set_font(self, fnt, siz):
         self.text_area.configure(font=(fnt, int(siz), ""))
     
+    def delete_file(self, event=None):
+        self.ask_for_delete()
+        
+    def ask_for_delete(self, event=None):
+        response = messagebox.askyesnocancel('Noted', 'Do you want to delete this file?')
+        if response != None:
+            if response == False:
+                self.text_area.delete(1.0, END)
+            else:
+                os.remove(self.get_path())
+                self.text_area.delete(1.0, END)
+                
+    def get_path(self):
+        return txt_file
+    
     def __init__(self, root):
         self.text_to_write = ""
         root.title("Noted")
@@ -100,6 +115,7 @@ class TextEditor:
         file_menu.add_command(label="New", command=self.new_file)
         file_menu.add_command(label="Open", command=self.open_file)
         file_menu.add_command(label="Save", command=self.save_file)
+        file_menu.add_command(label="Delete", command=self.delete_file)
         file_menu.add_separator()
         file_menu.add_command(label="Exit", command=self.quit_app)
         the_menu.add_cascade(label="File", menu=file_menu)
