@@ -1,2 +1,2 @@
 # TextEditor
-for Notedit
+A text editor, to be rewritten in C++
