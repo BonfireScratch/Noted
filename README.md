@@ -1,2 +1,2 @@
 # TextEditor
-A text editor
+A text editor, rewritten in Java
