@@ -1,2 +1,2 @@
 # TextEditor
-A text editor, to be rewritten in C++
+A text editor
