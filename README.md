@@ -9,5 +9,5 @@ The previous version was written in Python
  - Opening files
  - Copying files
 
-BonfireScratch
- - Owner of this repository
+ - BonfireScratch
+  - Owner of this repository
