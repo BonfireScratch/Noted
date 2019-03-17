@@ -12,7 +12,7 @@ class noted extends JFrame implements ActionListener {
    
     noted() 
     { 
-        f = new JFrame("editor"); 
+        f = new JFrame("Noted"); 
   
         try { 
             UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel"); 
