@@ -12,4 +12,4 @@ The previous version was written in Python
 #
 
 - BonfireScratch
-    - Owner of this Organisation
+    - Owner of this Repository
